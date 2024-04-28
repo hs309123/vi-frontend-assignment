@@ -4,12 +4,22 @@ import { Badge } from "@/components/ui/badge";
 import { type ColumnDef } from "@tanstack/react-table";
 import { labels, priorities, statuses } from "../_constants/metadata";
 import { type Task } from "../_constants/schema";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export const columns: Array<ColumnDef<Task>> = [
     {
+        accessorKey: "Select",
+        header: ({ column }) => <span>Select</span>,
+        cell: ({ row }) => <Checkbox
+            checked={row.getIsSelected()}
+            disabled={!row.getCanSelect()}
+            onChange={row.getToggleSelectedHandler()}
+        />,
+    },
+    {
         accessorKey: "id",
         header: ({ column }) => <span>Task</span>,
-        cell: ({ row }) => <div className="w-[80px]">{row.getValue("id")}</div>,
+        cell: ({ row }) => <div className="">{row.getValue("id")}</div>,
     },
     {
         accessorKey: "title",
@@ -20,7 +30,7 @@ export const columns: Array<ColumnDef<Task>> = [
             return (
                 <div className="flex space-x-2">
                     {label && <Badge variant="outline">{label.label}</Badge>}
-                    <span className="max-w-[400px] truncate font-medium">
+                    <span className="truncate font-medium">
                         {row.getValue("title")}
                     </span>
                 </div>
@@ -38,7 +48,7 @@ export const columns: Array<ColumnDef<Task>> = [
             }
 
             return (
-                <div className="flex w-[100px] items-center">
+                <div className="flex items-center">
                     {status.icon && <status.icon className="mr-2 h-4 w-4 text-muted-foreground" />}
                     <span>{status.label}</span>
                 </div>
@@ -60,7 +70,7 @@ export const columns: Array<ColumnDef<Task>> = [
             return (
                 <div className="flex items-center">
                     {priority.icon && (
-                        <priority.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+                        <priority.icon className="mr-2 h-4 text-muted-foreground" />
                     )}
                     <span>{priority.label}</span>
                 </div>
